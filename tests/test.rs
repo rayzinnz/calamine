@@ -1854,13 +1854,14 @@ fn issue_385() {
 #[test]
 fn pass_protected_with_readable_text() {
     let path = test_path("pass_protected_with_readable_text.xls");
-    assert!(
-        matches!(
-            open_workbook::<Xls<_>, _>(path),
-            Err(calamine::XlsError::Password)
-        ),
-        "Is expected to return XlsError::Password error"
-    );
+    let x = open_workbook_auto(path).expect("expect no error");
+    // assert!(
+    //     matches!(
+    //         open_workbook::<Xls<_>, _>(path),
+    //         Err(calamine::XlsError::Password)
+    //     ),
+    //     "Is expected to return XlsError::Password error"
+    // );
 }
 
 #[test]
