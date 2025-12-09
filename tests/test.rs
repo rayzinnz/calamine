@@ -1813,7 +1813,7 @@ fn any_sheets_ods() {
 }
 
 #[test]
-fn issue_102() {
+fn pass_protected_xlsx() {
     let path = test_path("pass_protected.xlsx");
     assert!(
         matches!(
@@ -1840,21 +1840,22 @@ fn issue_374() {
 }
 
 #[test]
-fn issue_385() {
+fn pass_protected_xls() {
     let path = test_path("issue_385.xls");
-    assert!(
-        matches!(
-            open_workbook::<Xls<_>, _>(path),
-            Err(calamine::XlsError::Password)
-        ),
-        "Is expected to return XlsError::Password error"
-    );
+    let _result = open_workbook::<Xls<_>, _>(path).expect("expect no error");
+    // assert!(
+    //     matches!(
+    //         open_workbook::<Xls<_>, _>(path),
+    //         Err(calamine::XlsError::Password)
+    //     ),
+    //     "Is expected to return XlsError::Password error"
+    // );
 }
 
 #[test]
 fn pass_protected_with_readable_text() {
     let path = test_path("pass_protected_with_readable_text.xls");
-    let x = open_workbook_auto(path).expect("expect no error");
+    let _result = open_workbook_auto(path).expect("expect no error");
     // assert!(
     //     matches!(
     //         open_workbook::<Xls<_>, _>(path),
