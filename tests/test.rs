@@ -205,6 +205,15 @@ fn xls() {
     );
 }
 
+#[test]
+fn bug_out_of_range() {
+    let excel: Xls<_> = wb("231007 - P-2 use.xls");
+    let result = excel.sheet_names();
+    let expected = vec!["Calibrations".to_string(), "Anion Amount Summary".to_string()];
+    assert_eq!(result, expected);
+}
+
+
 // test ignored because the file is too large to be committed and tested
 #[ignore]
 #[test]

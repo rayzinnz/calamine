@@ -384,10 +384,26 @@ impl<RS: Read + Seek> Xls<RS> {
                     0x0017 => {
                         // ExternSheet
                         let cxti = read_u16(r.data) as usize;
-                        xtis.extend(r.data[2..].chunks(6).take(cxti).map(|xti| Xti {
-                            _isup_book: read_u16(&xti[..2]),
-                            itab_first: read_i16(&xti[2..4]),
-                            _itab_last: read_i16(&xti[4..]),
+                        xtis.extend(r.data[2..].chunks(6).take(cxti).map(|xti| 
+                            {
+                                if xti.len() >=4 {
+                                    let isup_book = read_u16(&xti[..2]);
+                                    let itab_first = read_i16(&xti[2..4]);
+                                    let itab_last = read_i16(&xti[4..]);
+                                    
+                                    Xti {
+                                        _isup_book: isup_book,
+                                        itab_first: itab_first,
+                                        _itab_last: itab_last,
+                                    }
+                                } else {
+                                    let isup_book = read_u16(&xti[..2]);
+                                    Xti {
+                                        _isup_book: isup_book,
+                                        itab_first: 0,
+                                        _itab_last: 0,
+                                    }
+                                }
                         }));
                     }
                     0x00FC => strings = parse_sst(&mut r, &encoding)?, // SST
